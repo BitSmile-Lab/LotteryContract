@@ -27,7 +27,60 @@ contract BlastLotteryTest is BaseSetup {
         assertEq(lottery.injectorAddress(), injector);
     }
 
-    function teststartLotteryByOperator() public {
+    function testStartLotteryByOperator() public {
+        
+        uint256 lotteryId = _startLottery();
+        
+        BlastLottery.Lottery memory lotteryInfo = lottery.viewLottery(lotteryId);
+
+        
+        assertEq(uint256(lotteryInfo.status), uint256(BlastLottery.Status.Open));
+    }
+
+    function testBuyticket() public{
+
+        _startLottery();
+
+        uint32[] memory tickets = new uint32[](1);
+        tickets[0] = 1234561;
+
+        vm.prank(alice);
+        lottery.buyTickets(1, tickets);
+
+        //lottery.buyTickets("1", _ticketsBought, { from: bob });
+    }
+
+    function testCloseLottery() public{
+        uint256 lotteryId = _startLottery();
+
+        vm.warp(block.timestamp + 5 hours);
+        _closeLottery(lotteryId);
+
+    }
+
+    function testDrawFinalNumberAndMakeLotteryClaimable() public{
+        uint256 lotteryId = _startLottery();
+
+        //buy tickets
+        uint32[] memory tickets = new uint32[](1);
+        tickets[0] = 1000000;
+        vm.prank(alice);
+        lottery.buyTickets(1, tickets);
+
+
+        randomNumberGenerator.changeLatestLotteryId();
+        //close lottery
+        vm.warp(block.timestamp + 5 hours);
+        _closeLottery(lotteryId);
+
+        
+        //draw
+        vm.prank(operator);
+        lottery.drawFinalNumberAndMakeLotteryClaimable(lotteryId, false);
+    }
+
+
+    function _startLottery()  internal returns(uint256){
         lottery.setOperatorAndTreasuryAndInjectorAddresses(operator, treasury, injector);
         uint256 endTime  = block.timestamp + LOTTERY_LENGTH;
         uint256[6] memory REWARD_BREAKDOWNS = [uint256(200),uint256(300),uint256(500),uint256(1500),uint256(2500),uint256(5000)];
@@ -40,12 +93,13 @@ contract BlastLotteryTest is BaseSetup {
         REWARD_BREAKDOWNS,
         TREASURE_FEE
         );
+        return lottery.currentLotteryId();
+    }
+    
+    function _closeLottery(uint256 _lottoryId) internal{
+        vm.prank(operator);
+        lottery.closeLottery(_lottoryId);
 
-        
-        BlastLottery.Lottery memory lotteryInfo = lottery.viewLottery(1);
-
-        
-        assertEq(uint256(lotteryInfo.status), uint256(BlastLottery.Status.Open));
     }
 
 

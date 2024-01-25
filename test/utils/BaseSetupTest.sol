@@ -48,9 +48,10 @@ contract BaseSetup is Test {
         _deployTestTokenContracts();
 
         lottery = new BlastLottery(address(mockCake), address(randomNumberGenerator));
+        randomNumberGenerator.setLotteryAddress(address(lottery));
 
-        //allocateTokensAndApprovals(alice, uint128(MAX_INT));
-        //allocateTokensAndApprovals(bob, uint128(MAX_INT));
+        allocateTokensAndApprovals(alice, uint128(MAX_INT));
+        allocateTokensAndApprovals(bob, uint128(MAX_INT));
     }
 
     /**
