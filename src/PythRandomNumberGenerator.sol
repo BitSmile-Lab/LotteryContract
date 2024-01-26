@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 import "./interfaces/IRandomNumberGenerator.sol";
-import "./interfaces/IPancakeSwapLottery.sol";
+import "./interfaces/ILottery.sol";
 import "entropy-sdk-solidity/IEntropy.sol";
 
 library CoinFlipErrors {
@@ -27,7 +27,7 @@ contract PythRandomNumberGenerator is  IRandomNumberGenerator, Ownable {
 
     using SafeERC20 for IERC20;
 
-    address public pancakeSwapLottery;
+    address public lottery;
    
     uint32 public randomResult;
 
@@ -51,7 +51,7 @@ contract PythRandomNumberGenerator is  IRandomNumberGenerator, Ownable {
      * @param random: seed provided by the  lottery
      */
     function getRandomNumber(uint256 random) external override {
-        require(msg.sender == pancakeSwapLottery, "Only PancakeSwapLottery");
+        require(msg.sender == lottery, "Only lottery");
         require(random != 0, "Must have valid key hash");
         
 
@@ -75,11 +75,11 @@ contract PythRandomNumberGenerator is  IRandomNumberGenerator, Ownable {
     
 
     /**
-     * @notice Set the address for the PancakeSwapLottery
-     * @param _pancakeSwapLottery: address of the PancakeSwap lottery
+     * @notice Set the address for the lottery
+     * @param _lottery: address of the PancakeSwap lottery
      */
-    function setLotteryAddress(address _pancakeSwapLottery) external onlyOwner {
-        pancakeSwapLottery = _pancakeSwapLottery;
+    function setLotteryAddress(address _lottery) external onlyOwner {
+        lottery = _lottery;
     }
 
     /**
@@ -126,7 +126,7 @@ contract PythRandomNumberGenerator is  IRandomNumberGenerator, Ownable {
 
         // You can then convert the returned bytes32 into the range required by your application.
         randomResult = uint32(1000000 + (uint256(randomNumber) % 1000000));
-        latestLotteryId = IPancakeSwapLottery(pancakeSwapLottery).viewCurrentLotteryId();
+        latestLotteryId = ILottery(lottery).viewCurrentLotteryId();
 
         
         emit ResultNumber(randomNumber, randomResult);

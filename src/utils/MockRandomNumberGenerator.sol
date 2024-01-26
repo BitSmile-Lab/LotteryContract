@@ -3,7 +3,7 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "../interfaces/IRandomNumberGenerator.sol";
-import "../interfaces/IPancakeSwapLottery.sol";
+import "../interfaces/ILottery.sol";
 
 contract MockRandomNumberGenerator is IRandomNumberGenerator, Ownable {
     address public pancakeSwapLottery;
@@ -46,7 +46,7 @@ contract MockRandomNumberGenerator is IRandomNumberGenerator, Ownable {
      * @notice Change latest lotteryId to currentLotteryId
      */
     function changeLatestLotteryId() external {
-        latestLotteryId = IPancakeSwapLottery(pancakeSwapLottery).viewCurrentLotteryId();
+        latestLotteryId = ILottery(pancakeSwapLottery).viewCurrentLotteryId();
     }
 
     /**
