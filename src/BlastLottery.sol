@@ -135,12 +135,12 @@ contract BlastLottery is ReentrancyGuard, IPancakeSwapLottery, Ownable {
      * @notice Buy tickets for the current lottery
      * @param _lotteryId: lotteryId
      * @param _ticketNumbers: array of ticket numbers between 1,000,000 and 1,999,999
-     * @dev Callable by users
+     * @dev Callable by users 
+     notContract
      */
     function buyTickets(uint256 _lotteryId, uint32[] calldata _ticketNumbers)
         external
         override
-        notContract
         nonReentrant
     {
         require(_ticketNumbers.length != 0, "No ticket specified");
