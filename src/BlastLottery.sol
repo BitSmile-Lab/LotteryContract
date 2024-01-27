@@ -196,7 +196,7 @@ contract BlastLottery is ReentrancyGuard, ILottery, Ownable {
         uint256 _lotteryId,
         uint256[] calldata _ticketIds,
         uint32[] calldata _brackets
-    ) external override notContract nonReentrant {
+    ) external override  nonReentrant {
         require(_ticketIds.length == _brackets.length, "Not same length");
         require(_ticketIds.length != 0, "Length must be >0");
         require(_ticketIds.length <= maxNumberTicketsPerBuyOrClaim, "Too many tickets");

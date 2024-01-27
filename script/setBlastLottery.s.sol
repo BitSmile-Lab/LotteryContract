@@ -5,18 +5,16 @@ import "forge-std/Script.sol";
 import "../src/BlastLottery.sol";
 
 contract BlastLotteryScript is Script {
-    //lottery addres on sopelia is  0x02E4F2Ea0b540D0C4bb5a9D96892f442E1983D3E
-    address constant LOTTERY_ADDRESS = 0x02E4F2Ea0b540D0C4bb5a9D96892f442E1983D3E;
+  
+    address constant LOTTERY_ADDRESS = 0x394dCacf202B2b85616f78174696BfAe775a1CB3;
     address constant OPERATOR = 0x9203BAdCc86A60e83a6531607b54380Da3501cdE;
 
-    // address constant MOCK_TOKEN = 0x64ef27de2555359F5B6C6103E71C0cDf691085C7;
-    // address constant GENERATOR = 0x0D210668Ae530b3Db2890a17f512C7b4dE1cb150;
 
     uint256 constant LOTTERY_LENGTH = 14400; // 4h
-    uint256 constant TICKET_PRICE = 0.5 ether;
+    uint256 constant TICKET_PRICE = 0.0001 ether;
     uint256 constant DISCOUNT_DIVISOR = 2000;
 
-    uint256 constant TREASURE_FEE = 2000;
+    uint256 constant TREASURE_FEE = 0;
 
     function setUp() public {}
 
@@ -29,8 +27,10 @@ contract BlastLotteryScript is Script {
         
         vm.startBroadcast(deployerPrivateKey);
 
-        BlastLottery lottery = BlastLottery(0x02E4F2Ea0b540D0C4bb5a9D96892f442E1983D3E);
+        BlastLottery lottery = BlastLottery(LOTTERY_ADDRESS);
         lottery.setOperatorAndTreasuryAndInjectorAddresses(OPERATOR, OPERATOR, OPERATOR);
+
+        lottery.setMinAndMaxTicketPriceInCake(0.00001 ether, 10 ether);
 
         lottery.startLottery(
         endTime,

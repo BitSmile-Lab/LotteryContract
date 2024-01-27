@@ -13,7 +13,7 @@ contract BlastLotteryTest is BaseSetup {
     uint256 constant TICKET_PRICE = 0.5 ether;
     uint256 constant DISCOUNT_DIVISOR = 2000;
 
-    uint256 constant TREASURE_FEE = 2000;
+    uint256 constant TREASURE_FEE = 1000;
 
     function setUp() public virtual override  {
         super.setUp();
@@ -76,7 +76,16 @@ contract BlastLotteryTest is BaseSetup {
         
         //draw
         vm.prank(operator);
-        lottery.drawFinalNumberAndMakeLotteryClaimable(lotteryId, false);
+        lottery.drawFinalNumberAndMakeLotteryClaimable(lotteryId, true);
+
+
+        uint256[] memory ticketIds = new uint256[](1);
+        ticketIds[0] = 0;
+        uint32[] memory brackets = new uint32[](1);
+        brackets[0] = 5;
+        //claim
+        vm.prank(alice);
+        lottery.claimTickets(lotteryId, ticketIds, brackets);
     }
 
 
