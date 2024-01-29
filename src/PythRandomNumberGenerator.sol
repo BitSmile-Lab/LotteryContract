@@ -9,14 +9,15 @@ import "./interfaces/IRandomNumberGenerator.sol";
 import "./interfaces/ILottery.sol";
 import "entropy-sdk-solidity/IEntropy.sol";
 
-library CoinFlipErrors {
-    error IncorrectSender();
 
-    error InsufficientFee();
-}
 
 contract PythRandomNumberGenerator is  IRandomNumberGenerator, Ownable {
 
+
+    struct RandomInfo {
+        bytes32  userRandom;
+        bytes32  userCommitment;
+    }
 
     // Event emitted when a random number is requested. The sequence number is required to reveal
     // the result of the number.
@@ -36,8 +37,9 @@ contract PythRandomNumberGenerator is  IRandomNumberGenerator, Ownable {
     IEntropy immutable entropy;
     address immutable entropyProvider;
 
-    bytes32 public s_userRandom;
-    bytes32 public s_userCommitment;
+    mapping(uint256 => RandomInfo) public randomInfo;
+
+
     bytes32 public s_randomResult;
     uint64 public s_sequenceNumber;
 
@@ -51,7 +53,7 @@ contract PythRandomNumberGenerator is  IRandomNumberGenerator, Ownable {
      * @param random: seed provided by the  lottery
      */
     function getRandomNumber(uint256 random) external override {
-        require(msg.sender == lottery, "Only lottery");
+        //require(msg.sender == lottery, "Only lottery");
         require(random != 0, "Must have valid key hash");
         
 
@@ -65,9 +67,11 @@ contract PythRandomNumberGenerator is  IRandomNumberGenerator, Ownable {
             true
         );
 
-        s_userCommitment = userCommitment;
+     
         s_sequenceNumber = sequenceNumber;
-        s_userRandom = userRandom;
+  
+        RandomInfo memory info = RandomInfo(userRandom, userCommitment);
+        randomInfo[sequenceNumber] = info;
 
         emit RandomNumberRequest(sequenceNumber, userCommitment);
     }
@@ -118,9 +122,31 @@ contract PythRandomNumberGenerator is  IRandomNumberGenerator, Ownable {
         bytes32 randomNumber = entropy.reveal(
             entropyProvider,
             sequenceNumber,
-            s_userRandom,
+            randomInfo[sequenceNumber].userRandom ,
             providerRandom
         );
+
+        s_randomResult = randomNumber;
+
+        // You can then convert the returned bytes32 into the range required by your application.
+        randomResult = uint32(1000000 + (uint256(randomNumber) % 1000000));
+        latestLotteryId = ILottery(lottery).viewCurrentLotteryId();
+
+        
+        emit ResultNumber(randomNumber, randomResult);
+    }
+
+
+
+    function revealResultBlock(
+        uint64 sequenceNumber,
+        bytes32 providerRandom
+    )   external onlyOwner {
+        require(sequenceNumber == s_sequenceNumber, "Wrong sequence number");
+        
+        // Reveal the random number. This call reverts if the provided values fail to match the commitments
+        // from the request phase. If the call returns, randomNumber is a uniformly distributed bytes32.
+        bytes32 randomNumber = keccak256(abi.encodePacked(sequenceNumber, providerRandom, block.timestamp));
 
         s_randomResult = randomNumber;
 

@@ -12,7 +12,7 @@ contract PythRandomNumberGeneratorScript is Script {
 
 
    //blast
-   //0x64ef27de2555359F5B6C6103E71C0cDf691085C7
+ 
 
     function setUp() public {}
 
