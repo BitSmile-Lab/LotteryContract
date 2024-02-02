@@ -12,8 +12,8 @@ contract PythRandomNumberGeneratorScript is Script {
 
 
    //blast
-    address payable public  GENERATOR = payable(0x4bE54bEeaC430b149F626eA0861c468cD9f6fAa6);
-    address constant LOTTERY_ADDRESS = 0xbb4089E94d82EF2Fc278d44cE37d346F679F0E5e;
+    address payable public  GENERATOR = payable(0xC9c4BDD43cD9970BEA1206EA6e80825DE11C047D);
+    address constant LOTTERY_ADDRESS = 0x73b43Bb6AdEdA9613A186d0FA5fA2a284381aaDD;
     address constant OPERATOR = 0x9203BAdCc86A60e83a6531607b54380Da3501cdE;
     function setUp() public {}
 
@@ -24,7 +24,7 @@ contract PythRandomNumberGeneratorScript is Script {
 
         PythRandomNumberGenerator randomGenerator = PythRandomNumberGenerator(GENERATOR);
         
-        randomGenerator.setLotteryAddress(LOTTERY_ADDRESS);
+        // randomGenerator.setLotteryAddress(LOTTERY_ADDRESS);
         
         // (bool success, bytes memory data) = GENERATOR.call{value: 0.001 ether}("");
         // require(success);
@@ -32,10 +32,10 @@ contract PythRandomNumberGeneratorScript is Script {
         // uint256 number = block.timestamp;
         // randomGenerator.getRandomNumber(number);
 
-        uint64 sequenceNumber = 254;
-        bytes32 providerRandom = 0x82b70b17a0ec175ddc23caafe24b36c9b4b1925625cbac831cb157a31f1767bb;
+        uint64 sequenceNumber = 413;
+        bytes32 providerRandom = 0xbab2370bd4e36c0ae443362c4d1c44d618c4dad488013dc6732fad8b352af298;
         
-        randomGenerator.revealResult(sequenceNumber, providerRandom);
+        randomGenerator.revealResultBlock(sequenceNumber, providerRandom);
         //console.log(number);
         vm.stopBroadcast();
     }

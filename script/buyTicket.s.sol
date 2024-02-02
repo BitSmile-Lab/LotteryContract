@@ -7,9 +7,9 @@ import "../src/utils/MockERC20.sol";
 
 contract BlastLotteryScript is Script {
   
-    address constant LOTTERY_ADDRESS = 0xbb4089E94d82EF2Fc278d44cE37d346F679F0E5e;
+    address constant LOTTERY_ADDRESS = 0x73b43Bb6AdEdA9613A186d0FA5fA2a284381aaDD;
     address constant WETH_ADDRESS = 0x4200000000000000000000000000000000000023;
-    uint256 constant TICKET_PRICE = 0.0001 ether;
+    uint256 constant TICKET_PRICE = 0.001 ether;
     
     uint32 constant TICKET_NUMBER = 10;
 

@@ -9,7 +9,7 @@ contract BlastLotteryScript is Script {
 
     //blast testnet
     address constant MOCK_TOKEN = 0x4200000000000000000000000000000000000023;
-    address constant GENERATOR = 0x4bE54bEeaC430b149F626eA0861c468cD9f6fAa6;
+    address constant GENERATOR = 0xC9c4BDD43cD9970BEA1206EA6e80825DE11C047D;
 
     function setUp() public {}
 

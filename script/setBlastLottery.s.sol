@@ -6,13 +6,13 @@ import "../src/BlastLottery.sol";
 
 contract BlastLotteryScript is Script {
   
-    address constant LOTTERY_ADDRESS = 0xbb4089E94d82EF2Fc278d44cE37d346F679F0E5e;
+    address constant LOTTERY_ADDRESS = 0x73b43Bb6AdEdA9613A186d0FA5fA2a284381aaDD;
     address constant OPERATOR = 0x9203BAdCc86A60e83a6531607b54380Da3501cdE;
-    address constant RANDOM_GENERATOR = 0x4bE54bEeaC430b149F626eA0861c468cD9f6fAa6;
+    address constant RANDOM_GENERATOR = 0xC9c4BDD43cD9970BEA1206EA6e80825DE11C047D;
 
 
-    uint256 constant LOTTERY_LENGTH = 360; // 5min
-    uint256 constant TICKET_PRICE = 0.0001 ether;
+    uint256 constant LOTTERY_LENGTH = 36000; // 5min
+    uint256 constant TICKET_PRICE = 0.001 ether;
     uint256 constant DISCOUNT_DIVISOR = 2000;
 
     uint256 constant TREASURE_FEE = 0;
@@ -33,7 +33,7 @@ contract BlastLotteryScript is Script {
         
         // lottery.setOperatorAndTreasuryAndInjectorAddresses(OPERATOR, OPERATOR, OPERATOR);
 
-        // lottery.setMinAndMaxTicketPriceInCake(0.00001 ether, 10 ether);
+        // lottery.setMinAndMaxTicketPrice(0.00001 ether, 10 ether);
 
         // //start lottery
         lottery.startLottery(
