@@ -36,13 +36,13 @@ contract BlastLotteryScript is Script {
         // lottery.setMinAndMaxTicketPrice(0.00001 ether, 10 ether);
 
         // //start lottery
-        lottery.startLottery(
-        endTime,
-        TICKET_PRICE,
-        DISCOUNT_DIVISOR,
-        REWARD_BREAKDOWNS,
-        TREASURE_FEE
-        );
+        // lottery.startLottery(
+        // endTime,
+        // TICKET_PRICE,
+        // DISCOUNT_DIVISOR,
+        // REWARD_BREAKDOWNS,
+        // TREASURE_FEE
+        // );
 
        
         //close lottery
@@ -51,7 +51,7 @@ contract BlastLotteryScript is Script {
        
 
         //draw
-        //lottery.drawFinalNumberAndMakeLotteryClaimable(1, true);
+        lottery.drawFinalNumberAndMakeLotteryClaimable(2546, true);
 
         console.log(address(lottery));
         vm.stopBroadcast();

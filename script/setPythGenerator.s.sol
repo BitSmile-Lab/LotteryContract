@@ -32,8 +32,8 @@ contract PythRandomNumberGeneratorScript is Script {
         // uint256 number = block.timestamp;
         // randomGenerator.getRandomNumber(number);
 
-        uint64 sequenceNumber = 413;
-        bytes32 providerRandom = 0xbab2370bd4e36c0ae443362c4d1c44d618c4dad488013dc6732fad8b352af298;
+        uint64 sequenceNumber = 2546;
+        bytes32 providerRandom = 0xcd00f9a134c82be03b480304d630e11bc8920a15bbb232ef2507239e6e9aaf27;
         
         randomGenerator.revealResultBlock(sequenceNumber, providerRandom);
         //console.log(number);

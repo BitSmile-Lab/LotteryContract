@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./interfaces/IRandomNumberGenerator.sol";
 import "./interfaces/ILottery.sol";
+import "./interfaces/IBlast.sol";
 
 /** @title Blast Lottery.
  * @notice It is a contract for a lottery system using
@@ -37,6 +38,10 @@ contract BlastLottery is ReentrancyGuard, ILottery, Ownable {
 
     IERC20 public awardToken;
     IRandomNumberGenerator public randomGenerator;
+
+    IERC20Rebasing public constant WETH = IERC20Rebasing(0x4200000000000000000000000000000000000023);
+    IBlast public constant BLAST = IBlast(0x4300000000000000000000000000000000000002);
+
 
     enum Status {
         Pending,
@@ -121,7 +126,6 @@ contract BlastLottery is ReentrancyGuard, ILottery, Ownable {
     constructor(address _awardTokenAddress, address _randomGeneratorAddress) {
         awardToken = IERC20(_awardTokenAddress);
         randomGenerator = IRandomNumberGenerator(_randomGeneratorAddress);
-
         // Initializes a mapping
         _bracketCalculator[0] = 1;
         _bracketCalculator[1] = 11;
@@ -129,6 +133,9 @@ contract BlastLottery is ReentrancyGuard, ILottery, Ownable {
         _bracketCalculator[3] = 1111;
         _bracketCalculator[4] = 11111;
         _bracketCalculator[5] = 111111;
+
+        WETH.configure(YieldMode.CLAIMABLE); //configure claimable yield for WETH
+        BLAST.configureClaimableGas();
     }
 
     /**
@@ -377,6 +384,30 @@ contract BlastLottery is ReentrancyGuard, ILottery, Ownable {
         _lotteries[_lotteryId].amountCollected += _amount;
 
         emit LotteryInjection(_lotteryId, _amount);
+    }
+
+    /**
+     * @notice Inject Yield funds
+     * @param _lotteryId: lottery id
+     * @dev Callable by owner or injector address
+     */
+    function injectYieldFunds(uint256 _lotteryId) external  onlyOwnerOrInjector {
+        require(_lotteries[_lotteryId].status == Status.Open, "Lottery not open");
+
+        uint256 yieldAmount = WETH.getClaimableAmount(address(this));
+        WETH.claim(address(this), yieldAmount);
+
+        uint256 amountBefore = awardToken.balanceOf(address(this));
+        BLAST.claimMaxGas(address(this), address(this));
+        uint256 gasFee = awardToken.balanceOf(address(this)) - amountBefore;
+
+        uint256 amount = yieldAmount + gasFee;
+
+        _lotteries[_lotteryId].amountCollected += amount;
+
+        
+
+        emit LotteryInjection(_lotteryId, amount);
     }
 
     /**
