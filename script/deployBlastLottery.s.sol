@@ -9,7 +9,7 @@ contract BlastLotteryScript is Script {
 
     //blast testnet
     address constant AWARD_TOKEN = 0x4200000000000000000000000000000000000023;
-    address constant GENERATOR = 0xC9c4BDD43cD9970BEA1206EA6e80825DE11C047D;
+    address constant GENERATOR = 0x6B394A710249DDA7bd6212Bb9029DD9B3bD1554a;
 
     function setUp() public {}
 

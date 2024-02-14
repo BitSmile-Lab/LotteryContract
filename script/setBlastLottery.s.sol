@@ -6,12 +6,12 @@ import "../src/BlastLottery.sol";
 
 contract BlastLotteryScript is Script {
   
-    address constant LOTTERY_ADDRESS = 0x73b43Bb6AdEdA9613A186d0FA5fA2a284381aaDD;
-    address constant OPERATOR = 0x9203BAdCc86A60e83a6531607b54380Da3501cdE;
-    address constant RANDOM_GENERATOR = 0xC9c4BDD43cD9970BEA1206EA6e80825DE11C047D;
+    address constant LOTTERY_ADDRESS = 0xc3D7F4a93f88a1C561704D568F82a8af88b2dc0a;
+    address constant OPERATOR = 0xEF45bEcB57Ded24cf0F5bcF22D33B829167Adf89;
+    address constant RANDOM_GENERATOR = 0x6B394A710249DDA7bd6212Bb9029DD9B3bD1554a;
 
 
-    uint256 constant LOTTERY_LENGTH = 36000; // 5min
+    uint256 constant LOTTERY_LENGTH = 3600; // 5min
     uint256 constant TICKET_PRICE = 0.001 ether;
     uint256 constant DISCOUNT_DIVISOR = 2000;
 
@@ -31,18 +31,18 @@ contract BlastLotteryScript is Script {
         
         BlastLottery lottery = BlastLottery(LOTTERY_ADDRESS);
         
-        // lottery.setOperatorAndTreasuryAndInjectorAddresses(OPERATOR, OPERATOR, OPERATOR);
+        lottery.setOperatorAndTreasuryAndInjectorAddresses(OPERATOR, OPERATOR, OPERATOR);
 
-        // lottery.setMinAndMaxTicketPrice(0.00001 ether, 10 ether);
+        lottery.setMinAndMaxTicketPrice(0.00001 ether, 10 ether);
 
         // //start lottery
-        // lottery.startLottery(
-        // endTime,
-        // TICKET_PRICE,
-        // DISCOUNT_DIVISOR,
-        // REWARD_BREAKDOWNS,
-        // TREASURE_FEE
-        // );
+        lottery.startLottery(
+        endTime,
+        TICKET_PRICE,
+        DISCOUNT_DIVISOR,
+        REWARD_BREAKDOWNS,
+        TREASURE_FEE
+        );
 
        
         //close lottery
@@ -51,7 +51,7 @@ contract BlastLotteryScript is Script {
        
 
         //draw
-        lottery.drawFinalNumberAndMakeLotteryClaimable(2546, true);
+        //lottery.drawFinalNumberAndMakeLotteryClaimable(2546, true);
 
         console.log(address(lottery));
         vm.stopBroadcast();
