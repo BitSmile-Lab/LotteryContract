@@ -58,14 +58,13 @@ and for coverage based testing:
 forge coverage --report debug
 ```
 
-
-
-
 ## Compatibilities
 
 - Solc Version: >0.8.19
 - Chain(s) to deploy contract to: 
   - Blast sepolia
 
-
-
+# Subgraph
+Subgraphs are open APIs on The Graph that organize and serve blockchain data to applications. Using subgraphs, developers and data consumers alike benefit from speedy access to indexed data.
+## Subgraph source code for the contract
+https://github.com/0502lian/LotterySubgraph
