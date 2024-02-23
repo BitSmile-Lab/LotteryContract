@@ -43,7 +43,7 @@ forge build
 ## Testing
 
 ```
-forge test
+forge test --fork-url "https://sepolia.blast.io"
 ```
 
 ### Test Coverage
