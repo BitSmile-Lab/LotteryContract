@@ -64,7 +64,3 @@ forge coverage --report debug
 - Chain(s) to deploy contract to: 
   - Blast sepolia
 
-# Subgraph
-Subgraphs are open APIs on The Graph that organize and serve blockchain data to applications. Using subgraphs, developers and data consumers alike benefit from speedy access to indexed data.
-## Subgraph source code for the contract
-https://github.com/0502lian/LotterySubgraph
